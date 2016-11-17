@@ -9,11 +9,11 @@ using System.Web;
 namespace BotDialogsExample.Dialogs
 {
     [Serializable]
-    public class Dialog2 : IDialog<object>
+    public class DialogB : IDialog<object>
     {
-        private const string _thisDialogLabel = "Dialog2";
+        private const string _thisDialogLabel = "DialogB";
         private const string _levelUpDialogLabel = "";
-        private const string _levelDownDialogLabel = "Dialog1";
+        private const string _levelDownDialogLabel = "DialogA";
 
         public async Task StartAsync(IDialogContext context)
         {

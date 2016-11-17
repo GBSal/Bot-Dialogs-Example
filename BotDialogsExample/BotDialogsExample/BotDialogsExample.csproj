@@ -120,6 +120,8 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\DialogB.cs" />
+    <Compile Include="Dialogs\DialogA.cs" />
     <Compile Include="Dialogs\Dialog2.cs" />
     <Compile Include="Dialogs\Dialog1.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />

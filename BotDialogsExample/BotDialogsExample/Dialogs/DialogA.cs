@@ -10,10 +10,10 @@ using System.Web;
 namespace BotDialogsExample.Dialogs
 {
     [Serializable]
-    public class Dialog1 : IDialog<object>
+    public class DialogA : IDialog<object>
     {
-        private const string _thisDialogLabel = "Dialog1";
-        private const string _levelUpDialogLabel = "Dialog2";
+        private const string _thisDialogLabel = "DialogA";
+        private const string _levelUpDialogLabel = "DialogB";
         private const string _levelDownDialogLabel = "RootDialog";
 
         public async Task StartAsync(IDialogContext context)
@@ -37,7 +37,7 @@ namespace BotDialogsExample.Dialogs
             if (goToNextDialog)
             {
                 await context.PostAsync($"[{_thisDialogLabel}]: Passing to {_levelUpDialogLabel}");
-                await context.Forward(new Dialog2(), ResumeAfterDialog, result, CancellationToken.None);
+                await context.Forward(new DialogB(), ResumeAfterDialog, result, CancellationToken.None);
             }
             else
             {
