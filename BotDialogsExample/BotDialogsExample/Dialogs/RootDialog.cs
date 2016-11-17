@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using BotDialogsExample.Enums;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,8 @@ namespace BotDialogsExample.Dialogs
         private const string _thisDialogLabel = "RootDialog";
         private string _levelUpDialogLabel = "";
 
-        public enum DialogPathOptions
-        {
-            Numbers,
-            Letters
-        }
-
         public async Task StartAsync(IDialogContext context)
         {
-
             context.Wait(this.MessageReceivedAsync);
         }
 
@@ -32,23 +26,23 @@ namespace BotDialogsExample.Dialogs
             PromptDialog.Choice(
                            context: context,
                            resume: AfterChoicePromptAsync,
-                           options: Enum.GetValues(typeof(DialogPathOptions)).Cast<DialogPathOptions>().ToArray(),
+                           options: Enum.GetValues(typeof(Options.DialogPathOptions)).Cast<Options.DialogPathOptions>().ToArray(),
                            prompt: $"[{_thisDialogLabel}]: Which path do you want to take:",
                            retry: $"[{_thisDialogLabel}]: I didn't understand. Please try again.");
         }
 
-        public async Task AfterChoicePromptAsync(IDialogContext context, IAwaitable<DialogPathOptions> result)
+        public async Task AfterChoicePromptAsync(IDialogContext context, IAwaitable<Options.DialogPathOptions> result)
         {
             var pathChoice = await result;
 
             switch (pathChoice)
             {
-                case DialogPathOptions.Letters:
+                case Options.DialogPathOptions.Letters:
                     _levelUpDialogLabel = "DialogA";
                     await context.PostAsync($"[{_thisDialogLabel}]: You chose {pathChoice}. Forwarding context on to {_levelUpDialogLabel}.");
                     await context.Forward(new DialogA(), ResumeAfterDialog, result, CancellationToken.None);
                     break;
-                case DialogPathOptions.Numbers:
+                case Options.DialogPathOptions.Numbers:
                     _levelUpDialogLabel = "Dialog1";
                     await context.PostAsync($"[{_thisDialogLabel}]: You chose {pathChoice}. Forwarding context on to {_levelUpDialogLabel}.");
                     await context.Forward(new Dialog1(), ResumeAfterDialog, result, CancellationToken.None);

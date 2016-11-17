@@ -125,6 +125,7 @@
     <Compile Include="Dialogs\Dialog2.cs" />
     <Compile Include="Dialogs\Dialog1.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
+    <Compile Include="Enums\DialogPathOptions.cs" />
     <Compile Include="Enums\NavigationDirectionOptions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
