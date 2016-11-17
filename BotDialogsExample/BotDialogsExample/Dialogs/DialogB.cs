@@ -48,7 +48,7 @@ namespace BotDialogsExample.Dialogs
                     break;
                 default:
                     await context.PostAsync($"[{_thisDialogLabel}]: You did not give a choice. Send any message to re-start {_thisDialogLabel}.");
-                    context.Done("");
+                    context.Wait(MessageReceivedAsync);
                     break;
             }
         }
