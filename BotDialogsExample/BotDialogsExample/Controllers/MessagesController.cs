@@ -23,7 +23,9 @@ namespace BotDialogsExample
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new RootDialog());
+                //Comment and uncomment to switch betwen IDialog and LuisDialog root dialogs
+                //await Conversation.SendAsync(activity, () => new RootDialog());
+                await Conversation.SendAsync(activity, () => new RootLuisDialog());
             }
             else
             {
