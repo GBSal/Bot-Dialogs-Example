@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using BotDialogsExample.Enums;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
@@ -22,27 +23,33 @@ namespace BotDialogsExample.Dialogs
 
         public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            PromptDialog.Confirm(
-                context,
-                AfterContinuePromptAsync,
-                $"[{_thisDialogLabel}]: Do you want to go back down to to {_levelDownDialogLabel}?",
-                $"[{_thisDialogLabel}]: Didn't get that! (were in {_thisDialogLabel})",
-                promptStyle: PromptStyle.None);
+            PromptDialog.Choice(
+               context: context,
+               resume: AfterChoicePromptAsync,
+               options: Enum.GetValues(typeof(Options.NavigationDirectionOptions)).Cast<Options.NavigationDirectionOptions>().ToArray(),
+               prompt: $"[{_thisDialogLabel}]: Which direction do you want to go?",
+               retry: $"[{_thisDialogLabel}]: I didn't understand. Please try again.");
         }
 
-        public async Task AfterContinuePromptAsync(IDialogContext context, IAwaitable<bool> result)
+        public async Task AfterChoicePromptAsync(IDialogContext context, IAwaitable<Options.NavigationDirectionOptions> result)
         {
-            var goToNextDialogDown = await result;
-            if (goToNextDialogDown)
+            var pathChoice = await result;
+
+            switch (pathChoice)
             {
-                context.ConversationData.Clear();
-                await context.PostAsync($"[{_thisDialogLabel}]: Closing {_thisDialogLabel}");
-                context.Done("");
-            }
-            else
-            {
-                await context.PostAsync($"[{_thisDialogLabel}]: OK, we'll stay in {_thisDialogLabel}. Send any message to re-start {_thisDialogLabel}.");
-                context.Wait(MessageReceivedAsync);
+                case Options.NavigationDirectionOptions.Up:
+                    await context.PostAsync($"[{_thisDialogLabel}]: We can't go further Up. Send any message to re-start {_thisDialogLabel}.");
+                    context.Wait(MessageReceivedAsync);
+                    break;
+                case Options.NavigationDirectionOptions.Down:
+                    context.ConversationData.Clear();
+                    await context.PostAsync($"[{_thisDialogLabel}]: Closing {_thisDialogLabel}");
+                    context.Done("");
+                    break;
+                default:
+                    await context.PostAsync($"[{_thisDialogLabel}]: You did not give a choice. Send any message to re-start {_thisDialogLabel}.");
+                    context.Done("");
+                    break;
             }
         }
     }

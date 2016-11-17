@@ -33,8 +33,8 @@ namespace BotDialogsExample.Dialogs
                            context: context,
                            resume: AfterChoicePromptAsync,
                            options: Enum.GetValues(typeof(DialogPathOptions)).Cast<DialogPathOptions>().ToArray(),
-                           prompt: "Which path do you want to take:",
-                           retry: "I didn't understand. Please try again.");
+                           prompt: $"[{_thisDialogLabel}]: Which path do you want to take:",
+                           retry: $"[{_thisDialogLabel}]: I didn't understand. Please try again.");
         }
 
         public async Task AfterChoicePromptAsync(IDialogContext context, IAwaitable<DialogPathOptions> result)
